@@ -2,15 +2,11 @@ import React, { useState } from 'react'
 import useMovieList from '../utils/useMovieList'
 import { filterData } from '../utils/helper';
 
-const Header = ({ onSearch }) => {
+const Header = () => {
     const movieList = useMovieList();
-    const [query,setQuery] = useState('');
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSearch(query);
-    };
-  
+    const [searchInput,setSearchInput] = useState("");  
+    const [filteredshows,setFilteredshows] = useState(movieList);
+
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-body-secondary shadow-sm rounded">
@@ -33,12 +29,15 @@ const Header = ({ onSearch }) => {
                         </ul>
                         <form className="d-flex" role="search">
                             <input className="form-control me-2" type="Search" placeholder="Search" aria-label="Search" 
-                            value={query} 
+                            value={searchInput} 
                             onChange={(e) => {
-                                setQuery(e.target.value)
+                                setSearchInput(e.target.value)
                             }}
                             />
-                            <button className="btn btn-outline-success" type="submit">Search</button>
+                            <button className="btn btn-outline-success" type="submit" onClick={() => {
+                                const data = filterData(searchInput,movieList);
+                                setFilteredshows(data);
+                            }}>Search</button>
 
                         </form>
                     </div>
